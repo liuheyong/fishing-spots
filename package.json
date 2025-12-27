@@ -1,0 +1,31 @@
+{
+  "name": "fishing-spots",
+  "version": "1.0.0",
+  "description": "钓点管理小程序",
+  "main": "main.js",
+  "scripts": {
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "dev:h5": "uni -p h5",
+    "build:h5": "uni build -p h5",
+    "dev:app": "uni -p app",
+    "build:app": "uni build -p app"
+  },
+  "keywords": [
+    "uniapp",
+    "vue3",
+    "fishing",
+    "spots"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@dcloudio/uni-app": "^3.0.0",
+    "@dcloudio/uni-ui": "^1.5.0",
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@dcloudio/vite-plugin-uni": "^3.0.0",
+    "vite": "^4.0.0"
+  }
+}

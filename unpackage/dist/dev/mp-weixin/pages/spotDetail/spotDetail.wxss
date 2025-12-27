@@ -1,0 +1,125 @@
+
+.container.data-v-fda9a21b {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 120rpx;
+}
+.swiper-wrapper.data-v-fda9a21b {
+  width: 100%;
+  height: 500rpx;
+  background-color: #000;
+}
+.swiper.data-v-fda9a21b {
+  width: 100%;
+  height: 100%;
+}
+.swiper-image.data-v-fda9a21b {
+  width: 100%;
+  height: 100%;
+}
+.info-card.data-v-fda9a21b {
+  background-color: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+.spot-title.data-v-fda9a21b {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+.spot-meta.data-v-fda9a21b {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+.meta-item.data-v-fda9a21b {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+.meta-text.data-v-fda9a21b {
+  font-size: 24rpx;
+  color: #999;
+}
+.detail-card.data-v-fda9a21b {
+  background-color: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+.card-title.data-v-fda9a21b {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-bottom: 25rpx;
+  padding-bottom: 15rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.title-text.data-v-fda9a21b {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+.detail-item.data-v-fda9a21b {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.detail-item.data-v-fda9a21b:last-child {
+  border-bottom: none;
+}
+.detail-label.data-v-fda9a21b {
+  font-size: 28rpx;
+  color: #666;
+  flex-shrink: 0;
+}
+.detail-value.data-v-fda9a21b {
+  font-size: 28rpx;
+  color: #333;
+  text-align: right;
+  flex: 1;
+  margin-left: 20rpx;
+}
+.description-text.data-v-fda9a21b {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.8;
+  text-align: justify;
+}
+.action-bar.data-v-fda9a21b {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: #fff;
+  padding: 20rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  gap: 20rpx;
+}
+.action-btn.data-v-fda9a21b {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  font-size: 28rpx;
+  border: none;
+}
+.edit-btn.data-v-fda9a21b {
+  background: linear-gradient(135deg, #3cc51f 0%, #2fb015 100%);
+  color: #fff;
+}
+.delete-btn.data-v-fda9a21b {
+  background: linear-gradient(135deg, #ff5a5f 0%, #e74c3c 100%);
+  color: #fff;
+}
+.btn-text.data-v-fda9a21b {
+  font-size: 28rpx;
+  font-weight: 500;
+}

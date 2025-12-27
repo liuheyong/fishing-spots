@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/spotList/spotList",
+    "pages/my/my",
+    "pages/spotDetail/spotDetail",
+    "pages/addSpot/addSpot",
+    "pages/editInfo/editInfo"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "钓点管理",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/spotList/spotList",
+        "iconPath": "static/tabbar/spot.png",
+        "selectedIconPath": "static/tabbar/spot-active.png",
+        "text": "钓点"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "iconPath": "static/tabbar/my.png",
+        "selectedIconPath": "static/tabbar/my-active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {}
+}
