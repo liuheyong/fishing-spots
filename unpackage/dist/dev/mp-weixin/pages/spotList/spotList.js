@@ -103,7 +103,7 @@ const _sfc_main = {
             mockData.push({
               id: i + 1,
               name: keyword ? `${keyword}相关钓点${i + 1}` : `钓点${i + 1}`,
-              imageUrl: "https://via.placeholder.com/300x200",
+              imageUrl: "http://p3.diaoyur.cn/group3/M00/0B/4C/cjd0iVhwYF-xmeuqfNBk9gLpv4atJ.jpeg",
               type: i % 2 === 0 ? "wild" : "black",
               createTime: (/* @__PURE__ */ new Date()).toISOString()
             });
