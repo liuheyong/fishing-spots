@@ -41,47 +41,50 @@ const _sfc_main = {
         provider: "weixin",
         success: (loginRes) => {
           common_vendor.index.__f__("log", "at App.vue:61", "登录成功，code:", loginRes.code);
-          common_vendor.index.getUserProfile({
-            desc: "用于完善用户资料",
-            success: (userRes) => {
-              common_vendor.index.__f__("log", "at App.vue:68", "获取用户信息成功:", userRes.userInfo);
-              const mockToken = "mock_token_" + Date.now();
-              const userInfo = {
-                avatar: userRes.userInfo.avatarUrl,
-                nickname: userRes.userInfo.nickName,
-                phone: ""
-                // 手机号需要单独授权获取
-              };
-              common_vendor.index.setStorageSync("token", mockToken);
-              common_vendor.index.setStorageSync("userInfo", userInfo);
-              loginModalShowing = false;
-              common_vendor.index.showToast({
-                title: "登录成功",
-                icon: "success",
-                duration: 1500
-              });
-              setTimeout(() => {
-                common_vendor.index.switchTab({
-                  url: "/pages/my/my"
-                });
-              }, 1500);
-            },
-            fail: (err) => {
-              common_vendor.index.__f__("error", "at App.vue:102", "获取用户信息失败:", err);
-              common_vendor.index.showToast({
-                title: "获取用户信息失败",
-                icon: "none"
-              });
-              setTimeout(() => {
-                common_vendor.index.exitMiniProgram();
-              }, 1500);
-            }
-          });
+          getUserInfoAndLogin(loginRes.code);
         },
         fail: (err) => {
-          common_vendor.index.__f__("error", "at App.vue:142", "登录失败:", err);
+          common_vendor.index.__f__("error", "at App.vue:96", "登录失败:", err);
           common_vendor.index.showToast({
             title: "登录失败",
+            icon: "none"
+          });
+          setTimeout(() => {
+            common_vendor.index.exitMiniProgram();
+          }, 1500);
+        }
+      });
+    }
+    function getUserInfoAndLogin(code) {
+      common_vendor.index.getUserProfile({
+        desc: "用于完善用户资料",
+        success: (userRes) => {
+          common_vendor.index.__f__("log", "at App.vue:118", "获取用户信息成功:", userRes.userInfo);
+          const mockToken = "mock_token_" + Date.now();
+          const userInfo = {
+            avatar: userRes.userInfo.avatarUrl,
+            nickname: userRes.userInfo.nickName,
+            phone: ""
+            // 手机号需要单独授权获取
+          };
+          common_vendor.index.setStorageSync("token", mockToken);
+          common_vendor.index.setStorageSync("userInfo", userInfo);
+          loginModalShowing = false;
+          common_vendor.index.showToast({
+            title: "登录成功",
+            icon: "success",
+            duration: 1500
+          });
+          setTimeout(() => {
+            common_vendor.index.switchTab({
+              url: "/pages/my/my"
+            });
+          }, 1500);
+        },
+        fail: (err) => {
+          common_vendor.index.__f__("error", "at App.vue:152", "获取用户信息失败:", err);
+          common_vendor.index.showToast({
+            title: "获取用户信息失败",
             icon: "none"
           });
           setTimeout(() => {

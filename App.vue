@@ -60,56 +60,10 @@ function handleLogin() {
     success: (loginRes) => {
       console.log('登录成功，code:', loginRes.code)
       
-      // 获取用户信息
+      // 在微信小程序中，getUserProfile必须在用户点击事件中调用
+      // 所以我们直接调用获取用户信息的函数
       // #ifdef MP-WEIXIN
-      uni.getUserProfile({
-        desc: '用于完善用户资料',
-        success: (userRes) => {
-          console.log('获取用户信息成功:', userRes.userInfo)
-          
-          // 这里应该将code和用户信息发送到后端服务器
-          // 后端验证后返回token
-          // 这里使用模拟数据
-          const mockToken = 'mock_token_' + Date.now()
-          const userInfo = {
-            avatar: userRes.userInfo.avatarUrl,
-            nickname: userRes.userInfo.nickName,
-            phone: '' // 手机号需要单独授权获取
-          }
-          
-          // 存储token和用户信息
-          uni.setStorageSync('token', mockToken)
-          uni.setStorageSync('userInfo', userInfo)
-          
-          // 关闭弹窗
-          loginModalShowing = false
-          
-          // 显示登录成功提示
-          uni.showToast({
-            title: '登录成功',
-            icon: 'success',
-            duration: 1500
-          })
-          
-          // 跳转到"我的"页面
-          setTimeout(() => {
-            uni.switchTab({
-              url: '/pages/my/my'
-            })
-          }, 1500)
-        },
-        fail: (err) => {
-          console.error('获取用户信息失败:', err)
-          uni.showToast({
-            title: '获取用户信息失败',
-            icon: 'none'
-          })
-          // 用户拒绝授权，退出小程序
-          setTimeout(() => {
-            uni.exitMiniProgram()
-          }, 1500)
-        }
-      })
+      getUserInfoAndLogin(loginRes.code)
       // #endif
       
       // #ifndef MP-WEIXIN
@@ -150,6 +104,63 @@ function handleLogin() {
       }, 1500)
     }
   })
+}
+
+/**
+ * 获取用户信息并登录
+ * 在用户主动点击事件中调用
+ */
+function getUserInfoAndLogin(code) {
+  // #ifdef MP-WEIXIN
+  uni.getUserProfile({
+    desc: '用于完善用户资料',
+    success: (userRes) => {
+      console.log('获取用户信息成功:', userRes.userInfo)
+      
+      // 这里应该将code和用户信息发送到后端服务器
+      // 后端验证后返回token
+      // 这里使用模拟数据
+      const mockToken = 'mock_token_' + Date.now()
+      const userInfo = {
+        avatar: userRes.userInfo.avatarUrl,
+        nickname: userRes.userInfo.nickName,
+        phone: '' // 手机号需要单独授权获取
+      }
+      
+      // 存储token和用户信息
+      uni.setStorageSync('token', mockToken)
+      uni.setStorageSync('userInfo', userInfo)
+      
+      // 关闭弹窗
+      loginModalShowing = false
+      
+      // 显示登录成功提示
+      uni.showToast({
+        title: '登录成功',
+        icon: 'success',
+        duration: 1500
+      })
+      
+      // 跳转到"我的"页面
+      setTimeout(() => {
+        uni.switchTab({
+          url: '/pages/my/my'
+        })
+      }, 1500)
+    },
+    fail: (err) => {
+      console.error('获取用户信息失败:', err)
+      uni.showToast({
+        title: '获取用户信息失败',
+        icon: 'none'
+      })
+      // 用户拒绝授权，退出小程序
+      setTimeout(() => {
+        uni.exitMiniProgram()
+      }, 1500)
+    }
+  })
+  // #endif
 }
 
 /**
