@@ -28,11 +28,11 @@ const _sfc_main = {
       common_vendor.index.getUserProfile({
         desc: "用于完善用户资料",
         success: (res) => {
-          common_vendor.index.__f__("log", "at pages/spotList/spotList.vue:102", "获取用户信息成功:", res.userInfo);
+          common_vendor.index.__f__("log", "at pages/spotList/spotList.vue:103", "获取用户信息成功:", res.userInfo);
           handleAuthSuccess(res.userInfo);
         },
         fail: (err) => {
-          common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:107", "用户拒绝授权:", err);
+          common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:108", "用户拒绝授权:", err);
           common_vendor.index.showToast({
             title: "需要授权才能使用",
             icon: "none"
@@ -41,7 +41,7 @@ const _sfc_main = {
       });
     }
     async function handleAuthSuccess(userInfo) {
-      common_vendor.index.__f__("log", "at pages/spotList/spotList.vue:135", "用户授权成功，用户信息:", userInfo);
+      common_vendor.index.__f__("log", "at pages/spotList/spotList.vue:136", "用户授权成功，用户信息:", userInfo);
       try {
         const response = await mockLoginApi(userInfo);
         if (response.success) {
@@ -63,7 +63,7 @@ const _sfc_main = {
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:164", "登录失败:", error);
+        common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:165", "登录失败:", error);
         common_vendor.index.showToast({
           title: "登录失败，请重试",
           icon: "none"
@@ -123,7 +123,7 @@ const _sfc_main = {
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:242", "加载钓点列表失败:", error);
+        common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:243", "加载钓点列表失败:", error);
         common_vendor.index.showToast({
           title: "网络错误",
           icon: "none"
@@ -232,8 +232,8 @@ const _sfc_main = {
         j: spotList.value.length > 0 && !hasMore.value
       }, spotList.value.length > 0 && !hasMore.value ? {} : {}, {
         k: common_vendor.p({
-          type: "plusempty",
-          size: "28",
+          type: "plus",
+          size: "24",
           color: "#fff"
         }),
         l: common_vendor.o(goToAdd)

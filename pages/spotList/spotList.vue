@@ -54,9 +54,10 @@
       </view>
     </view>
 
-    <!-- 增加标点按钮 -->
+    <!-- 新增钓点按钮 -->
     <view class="add-btn" @click="goToAdd">
-      <uni-icons type="plusempty" size="28" color="#fff"></uni-icons>
+      <uni-icons type="plus" size="24" color="#fff"></uni-icons>
+      <text class="add-text">新增钓点</text>
     </view>
   </view>
 </template>
@@ -441,21 +442,29 @@ const mockGetSpotList = ({ page, pageSize, keyword }) => {
 
 .add-btn {
   position: fixed;
-  right: 40rpx;
-  bottom: 120rpx;
-  width: 100rpx;
-  height: 100rpx;
+  right: 30rpx;
+  bottom: 30rpx;
+  padding: 0 40rpx;
+  height: 88rpx;
   background: linear-gradient(135deg, #3cc51f 0%, #2fb015 100%);
-  border-radius: 50%;
+  border-radius: 44rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 20rpx rgba(60, 197, 31, 0.4);
+  gap: 10rpx;
+  box-shadow: 0 8rpx 24rpx rgba(60, 197, 31, 0.4);
   z-index: 999;
   transition: all 0.3s;
 }
 
+.add-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
 .add-btn:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
+  box-shadow: 0 4rpx 16rpx rgba(60, 197, 31, 0.3);
 }
 </style>

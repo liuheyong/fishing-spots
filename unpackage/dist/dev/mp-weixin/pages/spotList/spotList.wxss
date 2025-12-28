@@ -81,19 +81,26 @@
 }
 .add-btn.data-v-7c22d8f2 {
   position: fixed;
-  right: 40rpx;
-  bottom: 120rpx;
-  width: 100rpx;
-  height: 100rpx;
+  right: 30rpx;
+  bottom: 30rpx;
+  padding: 0 40rpx;
+  height: 88rpx;
   background: linear-gradient(135deg, #3cc51f 0%, #2fb015 100%);
-  border-radius: 50%;
+  border-radius: 44rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 20rpx rgba(60, 197, 31, 0.4);
+  gap: 10rpx;
+  box-shadow: 0 8rpx 24rpx rgba(60, 197, 31, 0.4);
   z-index: 999;
   transition: all 0.3s;
 }
+.add-text.data-v-7c22d8f2 {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #fff;
+}
 .add-btn.data-v-7c22d8f2:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
+  box-shadow: 0 4rpx 16rpx rgba(60, 197, 31, 0.3);
 }
