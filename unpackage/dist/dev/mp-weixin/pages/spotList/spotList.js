@@ -17,12 +17,79 @@ const _sfc_main = {
     const loading = common_vendor.ref(false);
     const hasMore = common_vendor.ref(true);
     common_vendor.onLoad(() => {
-      common_vendor.index.__f__("log", "at pages/spotList/spotList.vue:79", "spotList onLoad");
       loadSpotList();
     });
-    common_vendor.onMounted(() => {
-      common_vendor.index.__f__("log", "at pages/spotList/spotList.vue:85", "spotList onMounted");
+    common_vendor.onShow(() => {
+      common_vendor.index.$on("triggerLogin", handleLogin);
     });
+    common_vendor.onMounted(() => {
+    });
+    function handleLogin() {
+      common_vendor.index.getUserProfile({
+        desc: "用于完善用户资料",
+        success: (res) => {
+          common_vendor.index.__f__("log", "at pages/spotList/spotList.vue:102", "获取用户信息成功:", res.userInfo);
+          handleAuthSuccess(res.userInfo);
+        },
+        fail: (err) => {
+          common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:107", "用户拒绝授权:", err);
+          common_vendor.index.showToast({
+            title: "需要授权才能使用",
+            icon: "none"
+          });
+        }
+      });
+    }
+    async function handleAuthSuccess(userInfo) {
+      common_vendor.index.__f__("log", "at pages/spotList/spotList.vue:135", "用户授权成功，用户信息:", userInfo);
+      try {
+        const response = await mockLoginApi(userInfo);
+        if (response.success) {
+          common_vendor.index.setStorageSync("token", response.data.token);
+          common_vendor.index.setStorageSync("userInfo", response.data.userInfo);
+          common_vendor.index.showToast({
+            title: "登录成功",
+            icon: "success"
+          });
+          setTimeout(() => {
+            common_vendor.index.switchTab({
+              url: "/pages/my/my"
+            });
+          }, 1500);
+        } else {
+          common_vendor.index.showToast({
+            title: response.message || "登录失败",
+            icon: "none"
+          });
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:164", "登录失败:", error);
+        common_vendor.index.showToast({
+          title: "登录失败，请重试",
+          icon: "none"
+        });
+      }
+    }
+    function mockLoginApi(userInfo) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            success: true,
+            data: {
+              token: "mock_token_" + Date.now(),
+              userInfo: {
+                id: 1,
+                avatarUrl: userInfo.avatarUrl,
+                nickName: userInfo.nickName,
+                gender: userInfo.gender,
+                phone: "13800138000"
+              }
+            },
+            message: "登录成功"
+          });
+        }, 500);
+      });
+    }
     const loadSpotList = async (isRefresh = false) => {
       if (loading.value)
         return;
@@ -56,7 +123,7 @@ const _sfc_main = {
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:133", "加载钓点列表失败:", error);
+        common_vendor.index.__f__("error", "at pages/spotList/spotList.vue:242", "加载钓点列表失败:", error);
         common_vendor.index.showToast({
           title: "网络错误",
           icon: "none"
