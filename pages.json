@@ -8,12 +8,6 @@
       }
     },
     {
-      "path": "pages/my/my",
-      "style": {
-        "navigationBarTitleText": "我的"
-      }
-    },
-    {
       "path": "pages/spotDetail/spotDetail",
       "style": {
         "navigationBarTitleText": "钓点详情"
@@ -24,34 +18,8 @@
       "style": {
         "navigationBarTitleText": "新增钓点"
       }
-    },
-    {
-      "path": "pages/editInfo/editInfo",
-      "style": {
-        "navigationBarTitleText": "修改信息"
-      }
     }
   ],
-  "tabBar": {
-    "color": "#7A7E83",
-    "selectedColor": "#3cc51f",
-    "borderStyle": "black",
-    "backgroundColor": "#ffffff",
-    "list": [
-      {
-        "pagePath": "pages/spotList/spotList",
-        "iconPath": "static/tabbar/spot.png",
-        "selectedIconPath": "static/tabbar/spot-active.png",
-        "text": "钓点"
-      },
-      {
-        "pagePath": "pages/my/my",
-        "iconPath": "static/tabbar/my.png",
-        "selectedIconPath": "static/tabbar/my-active.png",
-        "text": "我的"
-      }
-    ]
-  },
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "钓点管理",
