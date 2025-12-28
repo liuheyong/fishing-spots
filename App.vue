@@ -5,11 +5,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
-
-// 登录弹窗显示状态
-let loginModalShowing = false
 
 // 应用启动
 onLaunch(() => {
@@ -37,34 +33,43 @@ function checkLoginStatus() {
   const token = uni.getStorageSync('token')
   const userInfo = uni.getStorageSync('userInfo')
   
-  // 如果没有token或用户信息，显示登录弹窗
+  // 如果没有token或用户信息，显示登录提示弹窗
   if (!token || !userInfo) {
-    console.log('用户未登录，显示授权弹窗')
-    // 显示登录弹窗
-    if (!loginModalShowing) {
-      loginModalShowing = true
-      showLoginModal()
-    }
+    console.log('用户未登录，显示登录提示')
+    // 延迟显示，确保页面加载完成
+    setTimeout(() => {
+      uni.showModal({
+        title: '提示',
+        content: '您还未登录，是否立即登录？',
+        confirmText: '立即登录',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            // 用户点击确定，触发登录事件
+            // 通过事件通知钓点列表页面触发登录
+            uni.$emit('triggerLogin')
+          } else {
+            // 用户点击取消，退出小程序
+            uni.showToast({
+              title: '需要登录才能使用',
+              icon: 'none'
+            })
+          }
+        }
+      })
+    }, 500)
   } else {
     console.log('用户已登录')
   }
 }
 
-/**
- * 处理用户授权登录
- */
+// 非微信小程序环境的处理函数
 function handleLogin() {
   // 调用微信登录
   uni.login({
     provider: 'weixin',
     success: (loginRes) => {
       console.log('登录成功，code:', loginRes.code)
-      
-      // 在微信小程序中，getUserProfile必须在用户点击事件中调用
-      // 所以我们直接调用获取用户信息的函数
-      // #ifdef MP-WEIXIN
-      getUserInfoAndLogin(loginRes.code)
-      // #endif
       
       // #ifndef MP-WEIXIN
       // 非微信小程序环境的处理
@@ -77,8 +82,6 @@ function handleLogin() {
       
       uni.setStorageSync('token', mockToken)
       uni.setStorageSync('userInfo', userInfo)
-      
-      loginModalShowing = false
       
       uni.showToast({
         title: '登录成功',
@@ -102,106 +105,6 @@ function handleLogin() {
       setTimeout(() => {
         uni.exitMiniProgram()
       }, 1500)
-    }
-  })
-}
-
-/**
- * 获取用户信息并登录
- * 在用户主动点击事件中调用
- */
-function getUserInfoAndLogin(code) {
-  // #ifdef MP-WEIXIN
-  uni.getUserProfile({
-    desc: '用于完善用户资料',
-    success: (userRes) => {
-      console.log('获取用户信息成功:', userRes.userInfo)
-      
-      // 这里应该将code和用户信息发送到后端服务器
-      // 后端验证后返回token
-      // 这里使用模拟数据
-      const mockToken = 'mock_token_' + Date.now()
-      const userInfo = {
-        avatar: userRes.userInfo.avatarUrl,
-        nickname: userRes.userInfo.nickName,
-        phone: '' // 手机号需要单独授权获取
-      }
-      
-      // 存储token和用户信息
-      uni.setStorageSync('token', mockToken)
-      uni.setStorageSync('userInfo', userInfo)
-      
-      // 关闭弹窗
-      loginModalShowing = false
-      
-      // 显示登录成功提示
-      uni.showToast({
-        title: '登录成功',
-        icon: 'success',
-        duration: 1500
-      })
-      
-      // 跳转到"我的"页面
-      setTimeout(() => {
-        uni.switchTab({
-          url: '/pages/my/my'
-        })
-      }, 1500)
-    },
-    fail: (err) => {
-      console.error('获取用户信息失败:', err)
-      uni.showToast({
-        title: '获取用户信息失败',
-        icon: 'none'
-      })
-      // 用户拒绝授权，退出小程序
-      setTimeout(() => {
-        uni.exitMiniProgram()
-      }, 1500)
-    }
-  })
-  // #endif
-}
-
-/**
- * 处理取消登录
- */
-/**
- * 显示登录弹窗
- */
-function showLoginModal() {
-  uni.showModal({
-    title: '登录提示',
-    content: '为了给您提供更好的服务，需要获取您的微信授权信息。',
-    confirmText: '授权登录',
-    cancelText: '取消',
-    success: (res) => {
-      if (res.confirm) {
-        handleLogin()
-      } else {
-        handleCancelLogin()
-      }
-    },
-    fail: () => {
-      loginModalShowing = false
-    }
-  })
-}
-
-/**
- * 处理取消登录
- */
-function handleCancelLogin() {
-  uni.showModal({
-    title: '提示',
-    content: '未登录将无法使用完整功能，确定要退出吗？',
-    success: (res) => {
-      if (res.confirm) {
-        // 关闭弹窗
-        loginModalShowing = false
-        // 退出小程序
-        uni.exitMiniProgram()
-      }
     }
   })
 }
@@ -229,5 +132,4 @@ button::after {
 image {
   display: block;
 }
-
 </style>

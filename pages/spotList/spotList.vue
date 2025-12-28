@@ -63,7 +63,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { onLoad, onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app'
+import { onLoad, onReachBottom, onPullDownRefresh, onShow } from '@dcloudio/uni-app'
 
 // 响应式数据
 const searchKeyword = ref('') // 搜索关键词
@@ -79,10 +79,120 @@ onLoad(() => {
   loadSpotList()
 })
 
+// 页面显示时
+onShow(() => {
+  // 监听登录事件
+  uni.$on('triggerLogin', handleLogin)
+})
+
 // 页面挂载时
 onMounted(() => {
   // 可以在这里执行其他初始化操作
 })
+
+/**
+ * 处理登录
+ */
+function handleLogin() {
+  // #ifdef MP-WEIXIN
+  // 在微信小程序中，getUserProfile会从底部弹出授权弹窗
+  uni.getUserProfile({
+    desc: '用于完善用户资料',
+    success: (res) => {
+      console.log('获取用户信息成功:', res.userInfo)
+      // 用户同意授权
+      handleAuthSuccess(res.userInfo)
+    },
+    fail: (err) => {
+      console.error('用户拒绝授权:', err)
+      // 用户拒绝授权
+      uni.showToast({
+        title: '需要授权才能使用',
+        icon: 'none'
+      })
+    }
+  })
+  // #endif
+  
+  // #ifndef MP-WEIXIN
+  // 非微信小程序环境
+  const mockUserInfo = {
+    avatarUrl: 'http://p3.diaoyur.cn/group3/M00/0B/4C/cjd0iVhwYF-xmeuqfNBk9gLpv4atJ.jpeg',
+    nickName: '游客用户',
+    gender: 0,
+    city: '',
+    province: '',
+    country: ''
+  }
+  handleAuthSuccess(mockUserInfo)
+  // #endif
+}
+
+/**
+ * 处理授权成功
+ */
+async function handleAuthSuccess(userInfo) {
+  console.log('用户授权成功，用户信息:', userInfo)
+  
+  try {
+    // 调用后端接口，传递用户信息
+    const response = await mockLoginApi(userInfo)
+    
+    if (response.success) {
+      // 保存token和用户信息到本地存储
+      uni.setStorageSync('token', response.data.token)
+      uni.setStorageSync('userInfo', response.data.userInfo)
+      
+      uni.showToast({
+        title: '登录成功',
+        icon: 'success'
+      })
+      
+      // 延迟跳转到"我的"tab
+      setTimeout(() => {
+        uni.switchTab({
+          url: '/pages/my/my'
+        })
+      }, 1500)
+    } else {
+      uni.showToast({
+        title: response.message || '登录失败',
+        icon: 'none'
+      })
+    }
+  } catch (error) {
+    console.error('登录失败:', error)
+    uni.showToast({
+      title: '登录失败，请重试',
+      icon: 'none'
+    })
+  }
+}
+
+/**
+ * 模拟登录API
+ * 实际项目中应替换为真实的API请求
+ */
+function mockLoginApi(userInfo) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        success: true,
+        data: {
+          token: 'mock_token_' + Date.now(),
+          userInfo: {
+            id: 1,
+            avatarUrl: userInfo.avatarUrl,
+            nickName: userInfo.nickName,
+            gender: userInfo.gender,
+            phone: '13800138000'
+          }
+        },
+        message: '登录成功'
+      })
+    }, 500)
+  })
+}
 
 /**
  * 加载钓点列表
