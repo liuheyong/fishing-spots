@@ -225,55 +225,5 @@ button::after {
 image {
   display: block;
 }
-/* 登录弹窗样式 */
-.login-dialog {
-  background-color: #fff;
-  border-radius: 16rpx;
-  padding: 40rpx;
-  width: 580rpx;
-}
-.dialog-title {
-  font-size: 36rpx;
-  font-weight: 600;
-  color: #333;
-  text-align: center;
-  margin-bottom: 30rpx;
-}
-.dialog-content {
-  margin-bottom: 40rpx;
-}
-.content-text {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-  text-align: center;
-  display: block;
-}
-.dialog-buttons {
-  display: flex;
-  gap: 20rpx;
-}
-.cancel-btn,
-.confirm-btn {
-  flex: 1;
-  height: 80rpx;
-  border-radius: 40rpx;
-  font-size: 28rpx;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cancel-btn {
-  background-color: #f5f5f5;
-  color: #666;
-}
-.confirm-btn {
-  background: linear-gradient(135deg, #3cc51f 0%, #2fb015 100%);
-  color: #fff;
-}
-.cancel-btn::after,
-.confirm-btn::after {
-  border: none;
-}
+
 page{--status-bar-height:25px;--top-window-height:0px;--window-top:0px;--window-bottom:0px;--window-left:0px;--window-right:0px;--window-magin:0px}[data-c-h="true"]{display: none !important;}

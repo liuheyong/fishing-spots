@@ -8,48 +8,43 @@ if (!Math) {
   "./pages/addSpot/addSpot.js";
   "./pages/editInfo/editInfo.js";
 }
-if (!Array) {
-  const _component_uni_popup = common_vendor.resolveComponent("uni-popup");
-  _component_uni_popup();
-}
 const _sfc_main = {
   __name: "App",
   setup(__props) {
-    const loginPopup = common_vendor.ref(null);
+    let loginModalShowing = false;
     common_vendor.onLaunch(() => {
-      common_vendor.index.__f__("log", "at App.vue:30", "App Launch");
+      common_vendor.index.__f__("log", "at App.vue:16", "App Launch");
       checkLoginStatus();
     });
     common_vendor.onShow(() => {
-      common_vendor.index.__f__("log", "at App.vue:37", "App Show");
+      common_vendor.index.__f__("log", "at App.vue:23", "App Show");
       checkLoginStatus();
     });
     common_vendor.onHide(() => {
-      common_vendor.index.__f__("log", "at App.vue:44", "App Hide");
+      common_vendor.index.__f__("log", "at App.vue:30", "App Hide");
     });
     function checkLoginStatus() {
       const token = common_vendor.index.getStorageSync("token");
       const userInfo = common_vendor.index.getStorageSync("userInfo");
       if (!token || !userInfo) {
-        common_vendor.index.__f__("log", "at App.vue:56", "用户未登录，显示授权弹窗");
-        setTimeout(() => {
-          if (loginPopup.value) {
-            loginPopup.value.open();
-          }
-        }, 500);
+        common_vendor.index.__f__("log", "at App.vue:42", "用户未登录，显示授权弹窗");
+        if (!loginModalShowing) {
+          loginModalShowing = true;
+          showLoginModal();
+        }
       } else {
-        common_vendor.index.__f__("log", "at App.vue:64", "用户已登录");
+        common_vendor.index.__f__("log", "at App.vue:49", "用户已登录");
       }
     }
     function handleLogin() {
       common_vendor.index.login({
         provider: "weixin",
         success: (loginRes) => {
-          common_vendor.index.__f__("log", "at App.vue:76", "登录成功，code:", loginRes.code);
+          common_vendor.index.__f__("log", "at App.vue:61", "登录成功，code:", loginRes.code);
           common_vendor.index.getUserProfile({
             desc: "用于完善用户资料",
             success: (userRes) => {
-              common_vendor.index.__f__("log", "at App.vue:83", "获取用户信息成功:", userRes.userInfo);
+              common_vendor.index.__f__("log", "at App.vue:68", "获取用户信息成功:", userRes.userInfo);
               const mockToken = "mock_token_" + Date.now();
               const userInfo = {
                 avatar: userRes.userInfo.avatarUrl,
@@ -59,9 +54,7 @@ const _sfc_main = {
               };
               common_vendor.index.setStorageSync("token", mockToken);
               common_vendor.index.setStorageSync("userInfo", userInfo);
-              if (loginPopup.value) {
-                loginPopup.value.close();
-              }
+              loginModalShowing = false;
               common_vendor.index.showToast({
                 title: "登录成功",
                 icon: "success",
@@ -74,7 +67,7 @@ const _sfc_main = {
               }, 1500);
             },
             fail: (err) => {
-              common_vendor.index.__f__("error", "at App.vue:119", "获取用户信息失败:", err);
+              common_vendor.index.__f__("error", "at App.vue:102", "获取用户信息失败:", err);
               common_vendor.index.showToast({
                 title: "获取用户信息失败",
                 icon: "none"
@@ -86,7 +79,7 @@ const _sfc_main = {
           });
         },
         fail: (err) => {
-          common_vendor.index.__f__("error", "at App.vue:161", "登录失败:", err);
+          common_vendor.index.__f__("error", "at App.vue:142", "登录失败:", err);
           common_vendor.index.showToast({
             title: "登录失败",
             icon: "none"
@@ -97,32 +90,38 @@ const _sfc_main = {
         }
       });
     }
+    function showLoginModal() {
+      common_vendor.index.showModal({
+        title: "登录提示",
+        content: "为了给您提供更好的服务，需要获取您的微信授权信息。",
+        confirmText: "授权登录",
+        cancelText: "取消",
+        success: (res) => {
+          if (res.confirm) {
+            handleLogin();
+          } else {
+            handleCancelLogin();
+          }
+        },
+        fail: () => {
+          loginModalShowing = false;
+        }
+      });
+    }
     function handleCancelLogin() {
       common_vendor.index.showModal({
         title: "提示",
         content: "未登录将无法使用完整功能，确定要退出吗？",
         success: (res) => {
           if (res.confirm) {
-            if (loginPopup.value) {
-              loginPopup.value.close();
-            }
+            loginModalShowing = false;
             common_vendor.index.exitMiniProgram();
           }
         }
       });
     }
     return (_ctx, _cache) => {
-      return {
-        a: common_vendor.o(handleCancelLogin),
-        b: common_vendor.o(handleLogin),
-        c: common_vendor.sr(loginPopup, "ab16cb18-0", {
-          "k": "loginPopup"
-        }),
-        d: common_vendor.p({
-          type: "dialog",
-          ["mask-click"]: false
-        })
-      };
+      return {};
     };
   }
 };

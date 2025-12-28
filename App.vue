@@ -1,20 +1,6 @@
 <template>
   <view class="app">
     <!-- 应用主容器 -->
-    
-    <!-- 授权登录弹窗 -->
-    <uni-popup ref="loginPopup" type="dialog" :mask-click="false">
-      <view class="login-dialog">
-        <view class="dialog-title">登录提示</view>
-        <view class="dialog-content">
-          <text class="content-text">为了给您提供更好的服务，需要获取您的微信授权信息。</text>
-        </view>
-        <view class="dialog-buttons">
-          <button class="cancel-btn" @click="handleCancelLogin">取消</button>
-          <button class="confirm-btn" @click="handleLogin">授权登录</button>
-        </view>
-      </view>
-    </uni-popup>
   </view>
 </template>
 
@@ -22,8 +8,8 @@
 import { ref } from 'vue'
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 
-// 登录弹窗引用
-const loginPopup = ref(null)
+// 登录弹窗显示状态
+let loginModalShowing = false
 
 // 应用启动
 onLaunch(() => {
@@ -54,12 +40,11 @@ function checkLoginStatus() {
   // 如果没有token或用户信息，显示登录弹窗
   if (!token || !userInfo) {
     console.log('用户未登录，显示授权弹窗')
-    // 延迟显示弹窗，确保页面已加载
-    setTimeout(() => {
-      if (loginPopup.value) {
-        loginPopup.value.open()
-      }
-    }, 500)
+    // 显示登录弹窗
+    if (!loginModalShowing) {
+      loginModalShowing = true
+      showLoginModal()
+    }
   } else {
     console.log('用户已登录')
   }
@@ -97,9 +82,7 @@ function handleLogin() {
           uni.setStorageSync('userInfo', userInfo)
           
           // 关闭弹窗
-          if (loginPopup.value) {
-            loginPopup.value.close()
-          }
+          loginModalShowing = false
           
           // 显示登录成功提示
           uni.showToast({
@@ -133,7 +116,7 @@ function handleLogin() {
       // 非微信小程序环境的处理
       const mockToken = 'mock_token_' + Date.now()
       const userInfo = {
-        avatar: 'https://via.placeholder.com/200',
+        avatar: 'http://p3.diaoyur.cn/group3/M00/0B/4C/cjd0iVhwYF-xmeuqfNBk9gLpv4atJ.jpeg',
         nickname: '游客用户',
         phone: ''
       }
@@ -141,9 +124,7 @@ function handleLogin() {
       uni.setStorageSync('token', mockToken)
       uni.setStorageSync('userInfo', userInfo)
       
-      if (loginPopup.value) {
-        loginPopup.value.close()
-      }
+      loginModalShowing = false
       
       uni.showToast({
         title: '登录成功',
@@ -174,6 +155,31 @@ function handleLogin() {
 /**
  * 处理取消登录
  */
+/**
+ * 显示登录弹窗
+ */
+function showLoginModal() {
+  uni.showModal({
+    title: '登录提示',
+    content: '为了给您提供更好的服务，需要获取您的微信授权信息。',
+    confirmText: '授权登录',
+    cancelText: '取消',
+    success: (res) => {
+      if (res.confirm) {
+        handleLogin()
+      } else {
+        handleCancelLogin()
+      }
+    },
+    fail: () => {
+      loginModalShowing = false
+    }
+  })
+}
+
+/**
+ * 处理取消登录
+ */
 function handleCancelLogin() {
   uni.showModal({
     title: '提示',
@@ -181,9 +187,7 @@ function handleCancelLogin() {
     success: (res) => {
       if (res.confirm) {
         // 关闭弹窗
-        if (loginPopup.value) {
-          loginPopup.value.close()
-        }
+        loginModalShowing = false
         // 退出小程序
         uni.exitMiniProgram()
       }
@@ -215,63 +219,4 @@ image {
   display: block;
 }
 
-/* 登录弹窗样式 */
-.login-dialog {
-  background-color: #fff;
-  border-radius: 16rpx;
-  padding: 40rpx;
-  width: 580rpx;
-}
-
-.dialog-title {
-  font-size: 36rpx;
-  font-weight: 600;
-  color: #333;
-  text-align: center;
-  margin-bottom: 30rpx;
-}
-
-.dialog-content {
-  margin-bottom: 40rpx;
-}
-
-.content-text {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-  text-align: center;
-  display: block;
-}
-
-.dialog-buttons {
-  display: flex;
-  gap: 20rpx;
-}
-
-.cancel-btn,
-.confirm-btn {
-  flex: 1;
-  height: 80rpx;
-  border-radius: 40rpx;
-  font-size: 28rpx;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cancel-btn {
-  background-color: #f5f5f5;
-  color: #666;
-}
-
-.confirm-btn {
-  background: linear-gradient(135deg, #3cc51f 0%, #2fb015 100%);
-  color: #fff;
-}
-
-.cancel-btn::after,
-.confirm-btn::after {
-  border: none;
-}
 </style>
