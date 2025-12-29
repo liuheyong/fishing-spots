@@ -1,3 +1,38 @@
+# DS_Store
 static/.DS_Store
 unpackage/dist/dev/mp-weixin/static/.DS_Store
+
+# 项目配置文件
 .vscode/settings.json
+
+# 构建输出目录
+unpackage/dist/
+
+# 依赖目录
+node_modules/
+
+# IDE配置文件
+.vscode/
+!.vscode/settings.json
+
+# 日志文件
+*.log
+
+# 环境变量文件
+.env*
+
+# macOS隐藏文件
+.DS_Store
+
+# 临时文件
+*.tmp
+*.temp
+
+# 备份文件
+*.bak
+*.backup
+pages.json.bak
+
+# 本地配置文件
+*.local
+config.local.js
