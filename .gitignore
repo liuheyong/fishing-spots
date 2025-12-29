@@ -13,7 +13,6 @@ node_modules/
 
 # IDE配置文件
 .vscode/
-!.vscode/settings.json
 
 # 日志文件
 *.log
